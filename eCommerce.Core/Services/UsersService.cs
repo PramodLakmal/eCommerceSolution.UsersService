@@ -4,7 +4,6 @@ using eCommerce.Core.Entities;
 using eCommerce.Core.RepositoryContracts;
 using eCommerce.Core.ServiceContracts;
 
-
 namespace eCommerce.Core.Services;
 
 internal class UsersService : IUsersService
@@ -18,6 +17,13 @@ internal class UsersService : IUsersService
         _usersRepository = usersRepository;
         _mapper = mapper;
     }
+
+    public async Task<UserDTO> GetUserByUserID(Guid userID)
+    {
+        ApplicationUser? user = await _usersRepository.GetUserByUserID(userID);
+        return _mapper.Map<UserDTO>(user);
+    }
+
     public async Task<AuthenticationResponse?> Login(LoginRequest loginRequest)
     {
         ApplicationUser? user = await _usersRepository.GetUserByEmailAndPassword(loginRequest.Email, loginRequest.Password);

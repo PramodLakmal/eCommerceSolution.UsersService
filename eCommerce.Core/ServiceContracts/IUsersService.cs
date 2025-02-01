@@ -13,4 +13,6 @@ public interface IUsersService
 
     Task<AuthenticationResponse?> Register(RegisterRequest registerRequest);
 
+    Task<UserDTO> GetUserByUserID(Guid userID);
+
 }

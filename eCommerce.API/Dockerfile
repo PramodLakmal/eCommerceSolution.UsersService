@@ -2,10 +2,10 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 9090
+EXPOSE 9091
 
 
 # This stage is used to build the service project
@@ -27,4 +27,9 @@ RUN dotnet publish "./eCommerce.API.csproj" -c $BUILD_CONFIGURATION -o /app/publ
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ENV POSTGRES_HOST=localhost
+ENV POSTGRES_PASSWORD=admin
+ENV POSTGRES_DATABASE=eCommerceUsers
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PORT=5432
 ENTRYPOINT ["dotnet", "eCommerce.API.dll"]
